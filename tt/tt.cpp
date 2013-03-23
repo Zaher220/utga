@@ -7,16 +7,20 @@ void main (){
 	int teacher, subject,group,audtype;
 	timetable* tt = new timetable();
 	freopen("output.txt","w",stdout);
-	for(i=0;i<10;i++){
-		tt->addAuditory(rand()%3);
+	for(j=1;j<4;j++){
+		for(i=0;i<2;i++){
+			tt->addAuditory(j);
+		}
 	}
-	for(int i=0;i<30;i++){
-		audtype = rand()%3;
-		subject = rand()%6;
-		teacher = rand()%4;
-		group = rand()%4;
-		tt->addActivity(teacher,subject,group,audtype);
+	for(int i=0;i<120;i++){
+		audtype = rand()%3+1;
+		subject = rand()%5+1;
+		teacher = rand()%3+1;
+		group = rand()%3+1;
+		if( tt->addActivity(teacher,subject,group,audtype) == false )
+			printf("\nwtf\n");
 	}
+	tt->shuffle();
 	tt->printTimetable();
 	/*vector<activity*> acts;
 	vector<auditory*> auds;
@@ -55,5 +59,5 @@ void main (){
 	}
 	*/
 	int k;
-	scanf("%d",&k);
+	//scanf("%d",&k);
 }

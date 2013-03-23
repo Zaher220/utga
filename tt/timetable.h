@@ -14,7 +14,8 @@ public:
 	void addAuditory(int audtype);
 	bool addActivity(int teacher, int subject, int group, int audtype);
 	void printTimetable();
-	bool shuffle();
+	void shuffle(int chance = 1);
+	void mutate();
 private:
 	vector<auditory*> auditories;
 };
