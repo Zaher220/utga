@@ -2,6 +2,7 @@
 #include <vector>
 #include <stdio.h>
 #include <vector>
+#include <map>
 #include <stdlib.h>
 #include "types.h"
 using namespace std;
@@ -9,6 +10,7 @@ using namespace std;
 class timetable
 {
 public:
+	static const int SCORES = 10000;
 	timetable(void);
 	~timetable(void);
 	void addAuditory(int audtype);
@@ -16,7 +18,19 @@ public:
 	void printTimetable();
 	void shuffle(int chance = 1);
 	void mutate();
+	int getGrade();
+	timetable operator*(timetable const tt);
+	auditory getAuditoryById(int id) const;
+	int deleteRepeatingActivities();
+	int countId(int id);
 private:
-	vector<auditory*> auditories;
+	int getWindowGradeForGroup(int gnum);
+	bool checkFreeActivityPlace(int day,int time, int group, int teacher, int audtype);
+	vector<auditory> auditories;
+	int aud_id, act_id;
+	map <int,int> types;
+	map <int,int> teachers;
+	map <int,int> groups;
+	map <int,int> subjects;
 };
 
