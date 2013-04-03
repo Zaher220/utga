@@ -19,38 +19,58 @@ void timetable::addAuditory( int audtype ){
 }
 
 bool timetable::addActivity( int teacher, int subject, int group, int audtype ){
-	int i=0;
-	point* free_aud = NULL;
-	bool add_status = false;
+	int i=0,k=0;
+	vector<point> pts;
 	for(i=0;i<auditories.size();i++){
 		if ( auditories.at(i).audtype == audtype ){
-			free_aud = auditories.at(i).findFree();
-			if( free_aud!= NULL ){
-				if( checkFreeActivityPlace(free_aud->x,free_aud->y, group,teacher, audtype) == true ){
-					auditories.at(i).timetable[free_aud->x][free_aud->y].teacher = teacher;
-					auditories.at(i).timetable[free_aud->x][free_aud->y].subject = subject;
-					auditories.at(i).timetable[free_aud->x][free_aud->y].group = group;
-					auditories.at(i).timetable[free_aud->x][free_aud->y].used = true;
-					auditories.at(i).timetable[free_aud->x][free_aud->y].id = act_id;
+			pts = auditories.at(i).findFree();
+			for(k=0;k<pts.size();k++){
+				if( checkFreeActivityPlace(pts.at(k).x, pts.at(k).y, group,teacher, audtype) == true ){
+					auditories.at(i).timetable[pts.at(k).x][pts.at(k).y].teacher = teacher;
+					auditories.at(i).timetable[pts.at(k).x][pts.at(k).y].subject = subject;
+					auditories.at(i).timetable[pts.at(k).x][pts.at(k).y].group = group;
+					auditories.at(i).timetable[pts.at(k).x][pts.at(k).y].used = true;
+					auditories.at(i).timetable[pts.at(k).x][pts.at(k).y].id = act_id;
 					act_id++;
 					groups[group] = 1;
 					teachers[teacher] = 1;
 					subjects[subject] = 1;
-					add_status = true;
-					break;
+					//printf("x=%d  y=%d \n",pts.at(k).x,pts.at(k).y);
+					return true;
 				}
 			}
-			free_aud = NULL;
+			pts.clear();
 		}
 	}
-	delete free_aud;
-	if ( add_status == true )
-		return	add_status;
-	else{
-		printf("Cant find place for pair\n");
-		return false;
-	}
+	printf("Cant find place for pair\n");
+	return false;
+}
 
+bool timetable::addActivity( int teacher, int subject, int group, int audtype, int id ){
+	int i=0,k=0;
+	vector<point> pts;
+	for(i=0;i<auditories.size();i++){
+		if ( auditories.at(i).audtype == audtype ){
+			pts = auditories.at(i).findFree();
+			for(k=0;k<pts.size();k++){
+				if( checkFreeActivityPlace(pts.at(k).x, pts.at(k).y, group,teacher, audtype) == true ){
+					auditories.at(i).timetable[pts.at(k).x][pts.at(k).y].teacher = teacher;
+					auditories.at(i).timetable[pts.at(k).x][pts.at(k).y].subject = subject;
+					auditories.at(i).timetable[pts.at(k).x][pts.at(k).y].group = group;
+					auditories.at(i).timetable[pts.at(k).x][pts.at(k).y].used = true;
+					auditories.at(i).timetable[pts.at(k).x][pts.at(k).y].id = id;
+					groups[group] = 1;
+					teachers[teacher] = 1;
+					subjects[subject] = 1;
+					//printf("x=%d  y=%d \n",pts.at(k).x,pts.at(k).y);
+					return true;
+				}
+			}
+			pts.clear();
+		}
+	}
+	printf("Cant find place for pair\n");
+	return false;
 }
 
 void timetable::shuffle( int chance )
@@ -187,7 +207,7 @@ timetable timetable::operator*( timetable const tt ){
 	for (k=0;k<auditories.size();k++){
 		for(i=0;i<6;i++){
 			for(j=0;j<7;j++){
-				if( auditories.at(k).timetable[i][j].used == true ){
+				if( auditories.at(k).timetable[i][j].used == true && auditories.at(k).timetable[i][j].id != 0){
 					acts.push_back(auditories.at(k).timetable[i][j]);
 				}
 			}
@@ -195,20 +215,26 @@ timetable timetable::operator*( timetable const tt ){
 	}
 	for (k=0;k<restt->auditories.size();k++){
 		if ( rand()%2 == 0 ){
-			restt->auditories[k] = tt.getAuditoryById(restt->auditories[k].id);
+			if ( tt.getAuditoryById(restt->auditories[k].id).audtype != 0 ){
+				restt->auditories[k] = tt.getAuditoryById(restt->auditories[k].id);
+			}
 		}
 	}
 	int cntid;
 	printf("acts.size=%d  ",acts.size());
+	
 	for(k=0;k<acts.size();k++){
 		cntid = restt->countId(acts.at(k).id);
-		if ( cntid == 0 )
+		if( cntid > 1 ){
+			restt->resetFirstById(acts.at(k).id);
+			printf("Bliat we have %d ids  id=%d\n",cntid,acts.at(k).id);
+		}
+		if ( cntid == 0 ){
 			printf("Fucking shirt  we lost activity\n");
-		else
-			if( cntid > 1 ){
-				printf("Bliat we have %d ids  id=%d\n",cntid,acts.at(k).id);
-			}
+			restt->addActivity(acts.at(i).teacher,acts.at(i).subject,acts.at(i).group,acts.at(i).audtype, acts.at(i).id);
+		}			
 	}
+	checkCollisions();
 	return *restt;
 }
 
@@ -219,6 +245,8 @@ auditory timetable::getAuditoryById(int id) const{
 			return auditories.at(k);
 		}
 	}
+	auditory aud;
+	return aud;
 }
 
 
@@ -243,4 +271,41 @@ int timetable::countId( int id ){
 		}
 	}
 	return sum;
+}
+
+bool timetable::checkCollisions(){
+	int i,j,k;
+	activity act;
+	for(k=0;k<auditories.size();k++){
+		for(i=0;i<6;i++){
+			for(j=0;j<7;j++){
+				if ( checkFreeActivityPlace(i,j,auditories.at(k).timetable[i][j].group,auditories.at(k).timetable[i][j].teacher,auditories.at(k).timetable[i][j].audtype) == true )
+					;
+				else{
+					printf("collisons detected\n");
+					act = auditories.at(k).timetable[i][j];
+					auditories.at(k).timetable[i][j].reset();
+					if ( !addActivity(act.teacher,act.subject,act.group,act.audtype) ){
+						printf("Cant solve collision\n");
+					}
+					//nado isravliat kolliziu
+				}
+			}
+		}
+	}
+	return true;
+}
+
+bool timetable::resetFirstById( int id ){
+	int i,j,k;
+	for(k=0;k<auditories.size();k++){
+		for(i=0;i<6;i++){
+			for(j=0;j<7;j++){
+				if ( auditories.at(k).timetable[i][j].id == id ){
+					auditories.at(k).timetable[i][j].reset();
+					return true;
+				}
+			}
+		}
+	}
 }

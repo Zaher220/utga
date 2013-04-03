@@ -15,6 +15,7 @@ public:
 	~timetable(void);
 	void addAuditory(int audtype);
 	bool addActivity(int teacher, int subject, int group, int audtype);
+	bool addActivity(int teacher, int subject, int group, int audtype, int id);
 	void printTimetable();
 	void shuffle(int chance = 1);
 	void mutate();
@@ -23,6 +24,8 @@ public:
 	auditory getAuditoryById(int id) const;
 	int deleteRepeatingActivities();
 	int countId(int id);
+	bool checkCollisions();
+	bool resetFirstById(int id);
 private:
 	int getWindowGradeForGroup(int gnum);
 	bool checkFreeActivityPlace(int day,int time, int group, int teacher, int audtype);

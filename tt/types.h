@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <vector>
 #include <stdlib.h>
+using namespace std;
 struct point {
 	int x,y;
 };
@@ -41,6 +42,10 @@ struct auditory{
 	int id;
 	int audtype;
 	activity timetable[6][7];
+	auditory(){
+		id = 0;
+		audtype = 0;
+	}
 	auditory & operator= (auditory aud){
 		int i=0,j=0;
 		id = aud.id;
@@ -52,19 +57,20 @@ struct auditory{
 		}
 		return *this;
 	}
-	point* findFree(){
+	vector<point> findFree(){
 		int i=0,j=0;
-		point *pt = new point();
+		vector<point> pts;
 		for (i=0;i<6;i++){
 			for(j=0;j<7;j++){
 				if ( timetable[i][j].used == false ){
-					pt->x = i;
-					pt->y = j;
-					return pt;
+					point pt;
+					pt.x = i;
+					pt.y = j;
+					pts.push_back(pt);
 				}
 			}
 		}
-		return NULL;
+		return pts;
 	}
 	/*void replaceActivities(point fst, point snd){
 		activity tmpact;

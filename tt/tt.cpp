@@ -9,11 +9,11 @@ void main (){
 	timetable* tt = new timetable();
 	freopen("output.txt","w",stdout);
 	for(j=1;j<4;j++){
-		for(i=0;i<2;i++){
+		for(i=0;i<3;i++){
 			tt->addAuditory(j);
 		}
 	}
-	for(int i=0;i<60;i++){
+	for(int i=0;i<40;i++){
 		audtype = rand()%3+1;
 		subject = rand()%5+1;
 		teacher = rand()%3+1;
