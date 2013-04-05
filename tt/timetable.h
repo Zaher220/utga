@@ -28,7 +28,7 @@ public:
 	bool resetFirstById(int id);
 private:
 	int getWindowGradeForGroup(int gnum);
-	bool checkFreeActivityPlace(int day,int time, int group, int teacher, int audtype);
+	bool checkFreeActivityPlace(int day,int time, int group, int teacher, int audtype, int audnum);
 	vector<auditory> auditories;
 	int aud_id, act_id;
 	map <int,int> types;

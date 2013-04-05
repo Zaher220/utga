@@ -13,7 +13,7 @@ void main (){
 			tt->addAuditory(j);
 		}
 	}
-	for(int i=0;i<40;i++){
+	for(int i=0;i<80;i++){
 		audtype = rand()%3+1;
 		subject = rand()%5+1;
 		teacher = rand()%3+1;
@@ -21,18 +21,20 @@ void main (){
 		if( tt->addActivity(teacher,subject,group,audtype) == false )
 			printf("\nwtf\n");
 	}
-	tt->shuffle();
+	for(i=0;i<10;i++){
+		tt->shuffle();
+	}
 
 
 
 	timetable* tt2 = new timetable();
 
 	for(j=1;j<4;j++){
-		for(i=0;i<2;i++){
+		for(i=0;i<3;i++){
 			tt2->addAuditory(j);
 		}
 	}
-	for(int i=0;i<60;i++){
+	for(int i=0;i<80;i++){
 		audtype = rand()%3+1;
 		subject = rand()%5+1;
 		teacher = rand()%3+1;
@@ -40,7 +42,10 @@ void main (){
 		if( tt2->addActivity(teacher,subject,group,audtype) == false )
 			printf("\nwtf\n");
 	}
-	tt2->shuffle();
+	for(i=0;i<10;i++){
+		tt2->shuffle();
+	}
+
 
 	timetable* tt3 = new timetable();
 
