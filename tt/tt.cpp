@@ -1,13 +1,17 @@
 #include "stdafx.h"
 #include "timetable.h"
+#include "GA.h"
 using namespace std;
 
 void main (){
-	int aud_id=0, act_id=0;
+	freopen("output.txt","w",stdout);
+	GA ga;
+	ga.startGA(5);
+	/*int aud_id=0, act_id=0;
 	int j=0,i=0;
 	int teacher, subject,group,audtype;
 	timetable* tt = new timetable();
-	freopen("output.txt","w",stdout);
+	
 	for(j=1;j<4;j++){
 		for(i=0;i<3;i++){
 			tt->addAuditory(j);
@@ -51,6 +55,6 @@ void main (){
 
 	*(tt3) = (*(tt))*(*(tt2));
 	tt3->printTimetable();	
-	int k;
+	int k;*/
 	//scanf("%d",&k);
 }

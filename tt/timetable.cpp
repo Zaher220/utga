@@ -42,7 +42,7 @@ bool timetable::addActivity( int teacher, int subject, int group, int audtype ){
 			pts.clear();
 		}
 	}
-	printf("Cant find place for pair\n");
+	//printf("Cant find place for pair\n");
 	return false;
 }
 
@@ -70,7 +70,7 @@ bool timetable::addActivity( int teacher, int subject, int group, int audtype, i
 			pts.clear();
 		}
 	}
-	printf("Cant find place for pair\n");
+	//printf("Cant find place for pair\n");
 	return false;
 }
 
@@ -222,16 +222,16 @@ timetable timetable::operator*( timetable const tt ){
 		}
 	}
 	int cntid;
-	printf("acts.size=%d  ",acts.size());
+	//printf("acts.size=%d  ",acts.size());
 	
 	for(k=0;k<acts.size();k++){
 		cntid = restt->countId(acts.at(k).id);
 		if( cntid > 1 ){
 			restt->resetFirstById(acts.at(k).id);
-			printf("Bliat we have %d ids  id=%d\n",cntid,acts.at(k).id);
+			//printf("Bliat we have %d ids  id=%d\n",cntid,acts.at(k).id);
 		}
 		if ( cntid == 0 ){
-			printf("cnt=%d acts.at(k).id=%d Fucking shirt  we lost activity\n",cntid,acts.at(k).id);
+			//printf("cnt=%d acts.at(k).id=%d Fucking shirt  we lost activity\n",cntid,acts.at(k).id);
 			restt->addActivity(acts.at(i).teacher, acts.at(i).subject, acts.at(i).group, acts.at(i).audtype, acts.at(i).id);
 		}			
 	}
@@ -283,13 +283,14 @@ bool timetable::checkCollisions(){
 			for(j=0;j<7;j++){
 				if ( auditories.at(k).timetable[i][j].used == true ){
 					if ( checkFreeActivityPlace(i,j,auditories.at(k).timetable[i][j].group,auditories.at(k).timetable[i][j].teacher,auditories.at(k).timetable[i][j].audtype, k) == false  ){
-						printf("collisons detected\n");
+						//printf("collisons detected\n");
 						act = auditories.at(k).timetable[i][j];
 						auditories.at(k).timetable[i][j].reset();
 						if ( !addActivity(act.teacher,act.subject,act.group,act.audtype) ){
-							printf("Cant solve collision\n");
+							//printf("Cant solve collision\n");
+							;
 						}
-						//nado isravliat kolliziu
+						//nado ispravliat kolliziu
 					}
 				}
 			}
@@ -310,4 +311,12 @@ bool timetable::resetFirstById( int id ){
 			}
 		}
 	}
+}
+
+bool timetable::operator<( timetable tt ){
+	if ( getGrade() > tt.getGrade() )
+		return true;
+	else
+		return false;
+
 }

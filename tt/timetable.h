@@ -21,12 +21,13 @@ public:
 	void mutate();
 	int getGrade();
 	timetable operator*(timetable const tt);
+	bool operator<(timetable tt);
 	auditory getAuditoryById(int id) const;
 	int deleteRepeatingActivities();
 	int countId(int id);
 	bool checkCollisions();
-	bool resetFirstById(int id);
 private:
+	bool resetFirstById(int id);
 	int getWindowGradeForGroup(int gnum);
 	bool checkFreeActivityPlace(int day,int time, int group, int teacher, int audtype, int audnum);
 	vector<auditory> auditories;
