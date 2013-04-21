@@ -144,7 +144,7 @@ void timetable::printTimetable(){
 }
 
 void timetable::mutate(){
-	this->shuffle(5);
+	this->shuffle(2);
 }
 
 //Разрыв между парами у группы
@@ -184,6 +184,7 @@ int timetable::getGrade(){
 	int penalty=0;
 	for (cur=groups.begin();cur!=groups.end();cur++){
 		penalty += getWindowGradeForGroup((*cur).first);
+		penalty += getGradeForActivitiesWithoutAuditory()*10;
 	}
 	return penalty;
 }
@@ -287,8 +288,8 @@ bool timetable::checkCollisions(){
 						act = auditories.at(k).timetable[i][j];
 						auditories.at(k).timetable[i][j].reset();
 						if ( !addActivity(act.teacher,act.subject,act.group,act.audtype) ){
-							//printf("Cant solve collision\n");
-							;
+							addActivityWithoutAuditory(act.teacher,act.subject,act.group,act.audtype,act.id);
+							printf("Cant solve collision\n");
 						}
 						//nado ispravliat kolliziu
 					}
@@ -319,4 +320,30 @@ bool timetable::operator<( timetable tt ){
 	else
 		return false;
 
+}
+
+void timetable::addActivityWithoutAuditory( int teacher, int subject, int group, int audtype, int id ){
+	activity act;
+	act.audtype = audtype;
+	act.group = group;
+	act.id = id;
+	act.subject = subject;
+	act.teacher = teacher;
+	activityWithoutAuditory.push_back(act);
+}
+
+int timetable::getGradeForActivitiesWithoutAuditory(){
+	return activityWithoutAuditory.size();
+}
+
+int timetable::locateActivitiesWithoutAuditory(){
+	vector<activity>::iterator i;
+	for(i=activityWithoutAuditory.begin();i!=activityWithoutAuditory.end();i++){
+		if ( !addActivity(i->teacher, i->subject, i->group, i->audtype)	){
+			printf("CantlocateActivitiesWithoutAuditory\n");
+		}else{
+			activityWithoutAuditory.erase(i);
+		}
+	}
+	return activityWithoutAuditory.size();
 }

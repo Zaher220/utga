@@ -30,15 +30,9 @@ vector<timetable> GA::selection( vector<timetable> population ){
 	sort(population.begin(),population.end());
 	int i=0;
 	vector<timetable> respop;
-	//printf("population.size()=%d size=%d\n",population.size(),size);
 	for(i=0;i<size;i++){
-		//printf("population.size()-i=%d\n",population.size()-i-1);
 		respop.push_back(population.at(population.size()-i-1));
 	}
-	/*for(i=population.size();i>population.size()/size;i--){
-		respop.push_back(population.at(i));
-	}*/
-	//return respop;
 	return respop;
 }
 
@@ -107,9 +101,9 @@ void GA::printGrades( vector<timetable> population ){
 	for(i=0;i<population.size();i++){
 		grade = population.at(i).getGrade();
 		sum += grade;
-		printf(" %d",grade);
+		printf(" ;%d",grade);
 	}
-	printf(" summ = %d \n",sum);
+	printf(" ;%d\n",sum/population.size());
 }
 
 vector<timetable> GA::mutation( vector<timetable> population ){

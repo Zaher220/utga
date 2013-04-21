@@ -6,7 +6,7 @@ using namespace std;
 void main (){
 	freopen("output.txt","w",stdout);
 	GA ga;
-	ga.startGA(5);
+	ga.startGA(20).printTimetable();
 	/*int aud_id=0, act_id=0;
 	int j=0,i=0;
 	int teacher, subject,group,audtype;

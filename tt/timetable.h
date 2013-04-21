@@ -5,6 +5,7 @@
 #include <map>
 #include <stdlib.h>
 #include "types.h"
+#include <omp.h>
 using namespace std;
 
 class timetable
@@ -27,11 +28,15 @@ public:
 	int countId(int id);
 	bool checkCollisions();
 private:
+	int getGradeForActivitiesWithoutAuditory();
 	bool resetFirstById(int id);
 	int getWindowGradeForGroup(int gnum);
 	bool checkFreeActivityPlace(int day,int time, int group, int teacher, int audtype, int audnum);
 	vector<auditory> auditories;
 	int aud_id, act_id;
+	vector<activity> activityWithoutAuditory;
+	int locateActivitiesWithoutAuditory();
+	void addActivityWithoutAuditory(int teacher, int subject, int group, int audtype, int id);
 	map <int,int> types;
 	map <int,int> teachers;
 	map <int,int> groups;
