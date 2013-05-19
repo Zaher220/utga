@@ -27,7 +27,12 @@ public:
 	int deleteRepeatingActivities();
 	int countId(int id);
 	bool checkCollisions();
+	void statistics();
+	void append(activity act);
+	void locateActivities(); 
 private:
+	bool addUnplacedActivity(int teacher, int subject, int group, int audtype, int id);
+	vector<activity> activs;
 	int getGradeForActivitiesWithoutAuditory();
 	bool resetFirstById(int id);
 	int getWindowGradeForGroup(int gnum);

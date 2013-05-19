@@ -2,6 +2,8 @@
 #include <vector>
 #include <stdlib.h>
 using namespace std;
+#define DAY_LENGHT = 7;
+#define WEEK_LENGHT = 6;
 struct point {
 	int x,y;
 };
@@ -41,7 +43,9 @@ struct activity{
 struct auditory{
 	int id;
 	int audtype;
-	activity timetable[6][7];
+	static const int Week_Lenght = 6;
+	static const int Day_Lenght = 7;
+	activity timetable[Week_Lenght][Day_Lenght];
 	auditory(){
 		id = 0;
 		audtype = 0;
@@ -50,8 +54,8 @@ struct auditory{
 		int i=0,j=0;
 		id = aud.id;
 		audtype = aud.audtype;
-		for(i=0;i<6;i++){
-			for(j=0;j<7;j++){
+		for(i=0;i<Week_Lenght;i++){
+			for(j=0;j<Day_Lenght;j++){
 				timetable[i][j] = aud.timetable[i][j];
 			}
 		}
@@ -60,8 +64,8 @@ struct auditory{
 	vector<point> findFree(){
 		int i=0,j=0;
 		vector<point> pts;
-		for (i=0;i<6;i++){
-			for(j=0;j<7;j++){
+		for (i=0;i<Week_Lenght;i++){
+			for(j=0;j<Day_Lenght;j++){
 				if ( timetable[i][j].used == false ){
 					point pt;
 					pt.x = i;
@@ -72,10 +76,4 @@ struct auditory{
 		}
 		return pts;
 	}
-	/*void replaceActivities(point fst, point snd){
-		activity tmpact;
-		tmpact = timetable[snd.x][snd.y];
-		timetable[snd.x][snd.y] = timetable[fst.x][fst.y];
-		timetable[fst.x][fst.y] = tmpact;
-	}*/
 };

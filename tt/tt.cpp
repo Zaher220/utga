@@ -5,56 +5,38 @@ using namespace std;
 
 void main (){
 	freopen("output.txt","w",stdout);
+#ifdef _OPENMP
+	printf("OpenMP is supported!\n");
+#endif
+	printf("Population grades\n");
 	GA ga;
-	ga.startGA(20).printTimetable();
-	/*int aud_id=0, act_id=0;
-	int j=0,i=0;
+	ga.setPopulationSize(30);
+	ga.startGA(5).printTimetable();
+	//timetable tt;
+
+	/*int j=0,i=0;
 	int teacher, subject,group,audtype;
-	timetable* tt = new timetable();
-	
-	for(j=1;j<4;j++){
-		for(i=0;i<3;i++){
-			tt->addAuditory(j);
+	timetable tt;
+	for(j=1;j<5;j++){
+		for(i=0;i<20;i++){
+			tt.addAuditory(j);
 		}
 	}
-	for(int i=0;i<80;i++){
+	for(int i=0;i<4000;i++){
 		audtype = rand()%3+1;
 		subject = rand()%5+1;
 		teacher = rand()%3+1;
 		group = rand()%3+1;
-		if( tt->addActivity(teacher,subject,group,audtype) == false )
-			printf("\nwtf\n");
+		activity act ;
+		act.audtype = audtype;
+		act.subject = subject;
+		act.teacher = teacher;
+		act.group = group;
+		act.used = true;
+		tt.append(act);
 	}
-	for(i=0;i<10;i++){
-		tt->shuffle();
-	}
-
-
-
-	timetable* tt2 = new timetable();
-
-	for(j=1;j<4;j++){
-		for(i=0;i<3;i++){
-			tt2->addAuditory(j);
-		}
-	}
-	for(int i=0;i<80;i++){
-		audtype = rand()%3+1;
-		subject = rand()%5+1;
-		teacher = rand()%3+1;
-		group = rand()%3+1;
-		if( tt2->addActivity(teacher,subject,group,audtype) == false )
-			printf("\nwtf\n");
-	}
-	for(i=0;i<10;i++){
-		tt2->shuffle();
-	}
-
-
-	timetable* tt3 = new timetable();
-
-	*(tt3) = (*(tt))*(*(tt2));
-	tt3->printTimetable();	
-	int k;*/
-	//scanf("%d",&k);
+	tt.locateActivities();
+	//tt.append()*/
+	/*int k;
+	scanf("%d",&k);*/
 }
