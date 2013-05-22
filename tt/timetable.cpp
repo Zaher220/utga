@@ -168,10 +168,10 @@ void timetable::printTimetable(){
 
 void timetable::mutate(){
 	//printf("mutate\n");
-	locateActivitiesWithoutAuditory();
+	//locateActivitiesWithoutAuditory();
 	this->shuffle(2);
-	locateActivitiesWithoutAuditory();
-	//printf("activityWithoutAuditory=%d\n",activityWithoutAuditory.size());
+	//locateActivitiesWithoutAuditory();
+	printf("activityWithoutAuditory=%d\n",activityWithoutAuditory.size());
 /*while ( activityWithoutAuditory.size() > 0 ){
 		printf("activityWithoutAuditory=%d\n",activityWithoutAuditory.size());
 		this->shuffle(2);

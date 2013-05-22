@@ -4,7 +4,7 @@
 
 using namespace std;
 GA::GA(void){
-	/*int j=0,i=0;
+	int j=0,i=0;
 	int teacher, subject,group,audtype;
 	vector<prepod> pps;
 	vector<activity> acts;
@@ -16,20 +16,22 @@ GA::GA(void){
 	int id = 0;
 	for( int i=0; i<groupcount;i++){
 		for(int k=0;k<pps.size();k++){
-			activity act;
-			act.audtype = rand()%3+1;
-			act.subject = pps.at(k).getSubject(0);
-			act.teacher = pps.at(k).id;
-			act.group = i;
-			act.id = id ;
-			id++;
-			activs.push_back(act);
+			for(int n=0;n<3;n++){
+				activity act;
+				act.audtype = rand()%3+1;
+				act.subject = pps.at(k).getSubject(n);
+				act.teacher = pps.at(k).id;
+				act.group = i;
+				act.id = id ;
+				id++;
+				activs.push_back(act);
+			}
 		}
-		for(int j=0;j<paircount;j++){
-			
-		}
+	}
+	/*for(int i =0;i<activs.size();i++){
+		printf("type=%d grp=%d sbjct=%d tchr=%d id=%d \n",activs.at(i).audtype, activs.at(i).group, activs.at(i).subject, activs.at(i).teacher, activs.at(i).id);
+		
 	}*/
-
  	/*map<int,int> grps,sbjs,tchs;
 	for(i=0;i<10;i++){
 		grps[i] = 30;
@@ -40,7 +42,7 @@ GA::GA(void){
 	for ( i=0;i<groupcount;i++){
 		for(j=0;j<tcount;j++)
 	}*/
-	for(int i=0;i<700;i++){
+	/*for(int i=0;i<700;i++){
 		activity act;
 		act.audtype = rand()%3+1;
 		act.subject = rand()%5+1;
@@ -48,7 +50,7 @@ GA::GA(void){
 		act.group = rand()%3+1;
 		act.id;
 		activs.push_back(act);
-	}
+	}*/
 }
 
 

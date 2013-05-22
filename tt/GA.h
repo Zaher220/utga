@@ -6,7 +6,8 @@ struct prepod{
 	int id;
 	int subject1, subject2, subject3;
 	map<int,int> subjectids;
-	prepod(int id, int sub1, int sub2, int sub3, int actscount){
+	prepod(int _id, int sub1, int sub2, int sub3, int actscount){
+		id = _id;
 		subject1 = sub1;
 		subject2 = sub2;
 		subject3 = sub3;

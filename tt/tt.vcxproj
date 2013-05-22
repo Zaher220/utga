@@ -95,4 +95,13 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
+  <UsingTask TaskName="ProgramVerificationSystems.PVSStudio.PVSStudio" AssemblyFile="C:\Program Files (x86)\PVS-Studio\PVS-Studio-MSBuild.dll" />
+  <Target Name="PVSStudioAnalysisBeforeCompile" BeforeTargets="ClCompile">
+    <PVSStudio Condition="'%(ClCompile.ExcludedFromBuild)'!='true'" Sources="@(ClCompile)" BeforeClCompile="true" BuildingInIDE="$(BuildingInsideVisualStudio)" TrackerLogDirectory="%(ClCompile.TrackerLogDirectory)" PreprocessorPath="$(VCInstallDir)" Platform="$(Platform)" ProjectFullPath="$(MSBuildProjectFullPath)">
+      <Output TaskParameter="SourcesAfterTlogParsing" ItemName="CLCompileAfterTlogParsing" />
+    </PVSStudio>
+  </Target>
+  <Target Name="PVSStudioAnalysisAfterCompile" AfterTargets="ClCompile">
+    <PVSStudio Sources="@(CLCompileAfterTlogParsing)" BeforeClCompile="false" BuildingInIDE="$(BuildingInsideVisualStudio)" PreprocessorPath="$(VCInstallDir)" Platform="$(Platform)" ProjectFullPath="$(MSBuildProjectFullPath)" />
+  </Target>
 </Project>
