@@ -15,7 +15,6 @@ public:
 	timetable(void);
 	~timetable(void);
 	void addAuditory(int audtype);
-	bool addActivity(int teacher, int subject, int group, int audtype);
 	bool addActivity(int teacher, int subject, int group, int audtype, int id);
 	void printTimetable();
 	void shuffle(int chance = 1);
@@ -30,7 +29,9 @@ public:
 	void statistics();
 	void append(activity act);
 	void locateActivities(); 
+	int locateActivitiesWithoutAuditory();
 private:
+	void deleteActivitiesWithEqualIds();
 	bool addUnplacedActivity(int teacher, int subject, int group, int audtype, int id);
 	vector<activity> activs;
 	int getGradeForActivitiesWithoutAuditory();
@@ -40,11 +41,11 @@ private:
 	vector<auditory> auditories;
 	int aud_id, act_id;
 	vector<activity> activityWithoutAuditory;
-	int locateActivitiesWithoutAuditory();
 	void addActivityWithoutAuditory(int teacher, int subject, int group, int audtype, int id);
-	map <int,int> types;
-	map <int,int> teachers;
+	void clearActivitiesWithoutAuditory();
+	/*map <int,int> types;
+	map <int,int> teachers;*/
 	map <int,int> groups;
-	map <int,int> subjects;
+	/*map <int,int> subjects;*/
 };
 

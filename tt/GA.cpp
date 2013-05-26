@@ -8,51 +8,45 @@ GA::GA(void){
 	int teacher, subject,group,audtype;
 	vector<prepod> pps;
 	vector<activity> acts;
-	for( int i=0; i<10; i++){
+	for( int i=1; i<10; i++){
 		prepod pp(i,i,i+1,i+2,8);
 		pps.push_back(pp);		
 	}// Преподы с предметами
-	int groupcount=20, paircount = 30;
-	int id = 0;
-	for( int i=0; i<groupcount;i++){
+	int groupcount=40, paircount = 30;
+	int id = 1,grouplimit=0;
+	for( int i=1; i<groupcount;i++){
 		for(int k=0;k<pps.size();k++){
 			for(int n=0;n<3;n++){
 				activity act;
-				act.audtype = rand()%3+1;
+				act.audtype = n+1;
 				act.subject = pps.at(k).getSubject(n);
 				act.teacher = pps.at(k).id;
 				act.group = i;
 				act.id = id ;
 				id++;
+				grouplimit++;
 				activs.push_back(act);
+				if( grouplimit == 17){
+					k = pps.size();
+					n=3;
+					grouplimit=0;
+				}
 			}
 		}
 	}
-	/*for(int i =0;i<activs.size();i++){
-		printf("type=%d grp=%d sbjct=%d tchr=%d id=%d \n",activs.at(i).audtype, activs.at(i).group, activs.at(i).subject, activs.at(i).teacher, activs.at(i).id);
-		
-	}*/
- 	/*map<int,int> grps,sbjs,tchs;
-	for(i=0;i<10;i++){
-		grps[i] = 30;
-	}
-	for(i=0;i<10;i++){
-		tchs[i] = 30;
-	}
-	for ( i=0;i<groupcount;i++){
-		for(j=0;j<tcount;j++)
-	}*/
-	/*for(int i=0;i<700;i++){
-		activity act;
-		act.audtype = rand()%3+1;
-		act.subject = rand()%5+1;
-		act.teacher = rand()%3+1;
-		act.group = rand()%3+1;
-		act.id;
-		activs.push_back(act);
-	}*/
-}
 
+	
+	int addingerrorcount=0;
+	for(i=0;i<activs.size();i++){
+		if( InitTimetable.addActivity(activs.at(i).teacher, activs.at(i).subject, activs.at(i).group, activs.at(i).audtype, activs.at(i).id) == false )
+			addingerrorcount++;
+	}
+	InitTimetable.shuffle();
+	InitTimetable.locateActivitiesWithoutAuditory();
+	InitTimetable.mutate();
+	InitTimetable.locateActivitiesWithoutAuditory();
+	printf("cant add %dd accts\n",addingerrorcount);
+}
 
 GA::~GA(void){
 }
@@ -102,20 +96,10 @@ vector<timetable> GA::getNewPopulation(){
 
 timetable GA::getNewTimetable(){
 	int j=0,i=0;
-	int teacher, subject,group,audtype;
 	timetable tt;
-	for(j=1;j<5;j++){
-		for(i=0;i<4;i++){
-			tt.addAuditory(j);
-		}
-	}
-	int addingerrorcount=0;
-	for(i=0;i<activs.size();i++){
-		if( tt.addActivity(activs.at(i).teacher,activs.at(i).subject,activs.at(i).group,activs.at(i).audtype) == false )
-			addingerrorcount++;
-	}
-	//printf("cant add %dd accts\n",addingerrorcount);
-	tt.shuffle();
+	tt = InitTimetable;
+	for(int i=0;i<8;i++)
+		tt.shuffle();
 	return tt;
 }
 
@@ -127,14 +111,21 @@ timetable GA::startGA( int iterations ){
 	int i=0;
 	vector<timetable> pop;
 	pop = getNewPopulation();
+	for(int i=0;i<pop.size();i++){
+		pop.at(i).statistics();
+	}
+	//pop = crossingover(pop);
+	printf("\n");
+	for(int i=0;i<pop.size();i++){
+		pop.at(i).statistics();
+	}
 	for(i=0;i<iterations;i++){
 		
 		pop = crossingover(pop);
-		//pop = mutation(pop);
+		pop = mutation(pop);
 		pop = selection(pop);
 		printGrades(pop);
 		pop = mutation(pop);
-		//printf("pop.size=%d\n",pop.size());
 	}
 	return getBest(pop);
 }

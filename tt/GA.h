@@ -33,6 +33,7 @@ public:
 	void printGrades(vector<timetable> population);
 	timetable startGA(int iterations);
 private:
+	timetable InitTimetable;
 	int POPULATION_SIZE;
 	timetable getNewTimetable();
 	timetable getBest(vector<timetable> population);
