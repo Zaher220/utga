@@ -10,8 +10,8 @@ void main (){
 #endif
 	printf("Population grades\n");
 	GA ga;
-	ga.setPopulationSize(10);
-	ga.startGA(3).printTimetable();
+	ga.setPopulationSize(5);
+	ga.startGA(5).printTimetable();
 	/*int k;
 	scanf("%d",&k);*/
 }

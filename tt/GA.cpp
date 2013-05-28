@@ -8,7 +8,7 @@ GA::GA(void){
 	int teacher, subject,group,audtype;
 	vector<prepod> pps;
 	vector<activity> acts;
-	for( int i=1; i<10; i++){
+	for( int i=1; i<15; i++){
 		prepod pp(i,i,i+1,i+2,8);
 		pps.push_back(pp);		
 	}// Преподы с предметами
@@ -26,7 +26,7 @@ GA::GA(void){
 				id++;
 				grouplimit++;
 				activs.push_back(act);
-				if( grouplimit == 17){
+				if( grouplimit == 24){
 					k = pps.size();
 					n=3;
 					grouplimit=0;
@@ -34,7 +34,7 @@ GA::GA(void){
 			}
 		}
 	}
-
+	printf("IDDDDDDDD=%d",id);
 	
 	int addingerrorcount=0;
 	for(i=0;i<activs.size();i++){
@@ -111,18 +111,12 @@ timetable GA::startGA( int iterations ){
 	int i=0;
 	vector<timetable> pop;
 	pop = getNewPopulation();
-	for(int i=0;i<pop.size();i++){
-		pop.at(i).statistics();
-	}
 	//pop = crossingover(pop);
-	printf("\n");
-	for(int i=0;i<pop.size();i++){
+	/*for(int i=0;i<pop.size();i++){
 		pop.at(i).statistics();
-	}
+	}*/
 	for(i=0;i<iterations;i++){
-		
 		pop = crossingover(pop);
-		pop = mutation(pop);
 		pop = selection(pop);
 		printGrades(pop);
 		pop = mutation(pop);
