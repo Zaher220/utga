@@ -11,7 +11,8 @@ using namespace std;
 class timetable
 {
 public:
-	static const int SCORES = 10000;
+	void check();
+	bool checkPair(int day, int time, int teacher, int group);
 	timetable(void);
 	~timetable(void);
 	bool addActivity(int teacher, int subject, int group, int audtype, int id);
@@ -25,6 +26,7 @@ public:
 	void append(activity act);
 	int locateActivitiesWithoutAuditory();
 private:
+	static const int SCORES = 10000;
 	static const int AUD_TYPES_COUNT = 4;
 	void locateActivities(); 
 	void addAuditory(int audtype);

@@ -111,12 +111,9 @@ timetable GA::startGA( int iterations ){
 	int i=0;
 	vector<timetable> pop;
 	pop = getNewPopulation();
-	//pop = crossingover(pop);
-	/*for(int i=0;i<pop.size();i++){
-		pop.at(i).statistics();
-	}*/
 	for(i=0;i<iterations;i++){
 		pop = crossingover(pop);
+		pop = mutation(pop);
 		pop = selection(pop);
 		printGrades(pop);
 		pop = mutation(pop);

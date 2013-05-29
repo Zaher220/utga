@@ -225,15 +225,10 @@ int timetable::countId( int id ){
 }
 
 bool timetable::checkFreeActivityPlace( int day, int time, int group, int teacher, int audtype, int audnum ){
-	int i,j,k;
-	for(k=0;k<auditories.size();k++){
-		if( k!= audnum && auditories.at(k).audtype == audtype){
-			if( auditories.at(k).timetable[day][time].group == group || auditories.at(k).timetable[day][time].teacher == teacher  ){
-				return false;
-			}
-		}
-	}
-	return true;
+	if ( checkPair(day,time,teacher,group)== true )
+		return true;
+	else
+		return false;
 }
 bool timetable::checkCollisions(){
 	int i,j,k;
@@ -413,4 +408,28 @@ void timetable::deleteActivitiesWithEqualIds(){
 
 void timetable::clearActivitiesWithoutAuditory(){
 	activityWithoutAuditory.clear();
+}
+
+void timetable::check(){
+	for(int k=0;k<auditories.size();k++){
+		for(int i=0;i<6;i++){
+			for(int j=0;j<7;j++){
+				checkPair(i,j,auditories.at(k).timetable[i][j].teacher,auditories.at(k).timetable[i][j].group);
+			}
+		}
+	}
+	return;
+}
+
+bool timetable::checkPair( int day, int time, int teacher, int group ){
+	int techercount=0, groupcount=0;
+	for(int k=0;k<auditories.size();k++){
+		if ( auditories.at(k).timetable[day][time].teacher == teacher)
+			techercount++;
+		if ( auditories.at(k).timetable[day][time].group == group)
+			groupcount++;
+	}
+	if ( techercount > 1 || groupcount > 1 )
+		return false;
+	return true;
 }

@@ -11,7 +11,7 @@ void main (){
 	printf("Population grades\n");
 	GA ga;
 	ga.setPopulationSize(5);
-	ga.startGA(5).printTimetable();
+	ga.startGA(20).printTimetable();
 	/*int k;
 	scanf("%d",&k);*/
 }
