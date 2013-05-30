@@ -68,28 +68,7 @@ bool timetable::addActivity( int teacher, int subject, int group, int audtype, i
 
 void timetable::shuffle( int chance )
 {
-		int i=0,j=0,k=0,z=0;
-	for(k=0;k<auditories.size();k++){
-		for(i=0;i<6;i++){
-			for(j=0;j<7;j++){
-				if ( auditories.at(k).timetable[i][j].used == true 
-					&&
-					(auditories.at(k).timetable[i][j].id == 0
-					|| auditories.at(k).timetable[i][j].audtype == 0 
-					|| auditories.at(k).timetable[i][j].group == 0
-					|| auditories.at(k).timetable[i][j].subject == 0
-					|| auditories.at(k).timetable[i][j].teacher == 0)
-					){
-						printf("auditories %d day %d Time %d ",k,i,j);
-						printf("id %d audtype %d group %d subject %d teacher %d\n",auditories.at(k).timetable[i][j].id,auditories.at(k).timetable[i][j].audtype,auditories.at(k).timetable[i][j].group,
-							auditories.at(k).timetable[i][j].subject,auditories.at(k).timetable[i][j].teacher);
-				}
-				
-			}
-		}
-	}
-
-
+	int i=0,j=0,k=0,z=0;
 	int rrow=0,rcoll=0,raud=0;
 	vector<int> auds;
 	activity tmpact;
@@ -102,22 +81,30 @@ void timetable::shuffle( int chance )
 		for(k=0;k<auds.size();k++){
 			for(i=0;i<6;i++){
 				for(j=0;j<7;j++){
-					if( auditories.at(auds.at(k)).timetable[i][j].used == true && rand()%chance==0){
-						raud = rand()%auds.size(); //Получаем рандомную аудиторию
-						rrow = rand()%6; //Рандомный день недели 
-						rcoll =rand()%7; //Рандомное время
-						if( auditories.at(auds.at(raud)).timetable[rrow][rcoll].used == false ){//Аудитория свободна
-							if ( checkFreeActivityPlace(rrow, rcoll, auditories.at(auds.at(k)).timetable[i][j].group, auditories.at(auds.at(k)).timetable[i][j].teacher, auditories.at(auds.at(k)).timetable[i][j].audtype, k) == true){ //Время не пересекается
-								auditories.at(auds.at(raud)).timetable[rrow][rcoll] = auditories.at(auds.at(k)).timetable[i][j]; //Перенесем занятие
-								auditories.at(auds.at(k)).timetable[i][j].reset(); // Освободим аудиторию
-							}
-						}else{//Аудитория занята
-							if ( checkFreeActivityPlace(rrow, rcoll, auditories.at(auds.at(k)).timetable[i][j].group, auditories.at(auds.at(k)).timetable[i][j].teacher,	auditories.at(auds.at(k)).timetable[i][j].audtype, k) == true &&
-								checkFreeActivityPlace(i, j, auditories.at(auds.at(k)).timetable[rrow][rcoll].group, auditories.at(auds.at(k)).timetable[rrow][rcoll].teacher,	auditories.at(auds.at(k)).timetable[rrow][rcoll].audtype, k) == true){
-									tmpact = auditories.at(auds.at(raud)).timetable[rrow][rcoll];
-									auditories.at(auds.at(raud)).timetable[rrow][rcoll] = auditories.at(auds.at(k)).timetable[i][j];
-									auditories.at(auds.at(k)).timetable[i][j] = tmpact;
-									tmpact.reset();
+					if( auditories.at(auds.at(k)).timetable[i][j].used == true ){//&& rand()%chance==0){
+						//raud = rand()%auds.size(); //Получаем рандомную аудиторию
+						for(int  m=0;m<auds.size();m++){
+							raud=m;
+							for (int f=0;f<6;f++){
+								for(int n=0;n<7;n++){
+									if( auditories.at(auds.at(raud)).timetable[f][n].used == false ){//Аудитория свободна
+										if ( checkFreeActivityPlace(f, n, auditories.at(auds.at(k)).timetable[i][j].group, auditories.at(auds.at(k)).timetable[i][j].teacher, auditories.at(auds.at(k)).timetable[i][j].audtype, k) == true){ //Время не пересекается
+											auditories.at(auds.at(raud)).timetable[f][n] = auditories.at(auds.at(k)).timetable[i][j]; //Перенесем занятие
+											//printf("Activity was replaced\n");
+											auditories.at(auds.at(k)).timetable[i][j].reset(); // Освободим аудиторию
+											f=6;n=7;
+										}
+									}else{//Аудитория занята
+										if ( checkFreeActivityPlace(f, n, auditories.at(auds.at(k)).timetable[i][j].group, auditories.at(auds.at(k)).timetable[i][j].teacher,	auditories.at(auds.at(k)).timetable[i][j].audtype, k) == true &&
+											checkFreeActivityPlace(i, j, auditories.at(auds.at(k)).timetable[f][n].group, auditories.at(auds.at(k)).timetable[f][n].teacher,	auditories.at(auds.at(k)).timetable[f][n].audtype, k) == true){
+												tmpact = auditories.at(auds.at(raud)).timetable[f][n];
+												auditories.at(auds.at(raud)).timetable[f][n] = auditories.at(auds.at(k)).timetable[i][j];
+												auditories.at(auds.at(k)).timetable[i][j] = tmpact;
+												tmpact.reset();
+												f=6;n=7;
+										}
+									}
+								}
 							}
 						}
 					}
@@ -159,10 +146,33 @@ void timetable::printTimetable(){
 }
 
 void timetable::mutate(){
+	vector<activity> acts;
+	for(int k=0;k<auditories.size();k++){
+		for(int i=0;i<6;i++){
+			for(int j=0;j<7;j++){
+				if ( rand()%4 == 0 ){
+					acts.push_back(auditories.at(i).timetable[i][j]);
+					auditories.at(i).timetable[i][j].reset();
+				}
+			}
+		}
+	}
+	int randnum=0;
+	activity tempact;
+	for(int i=0;i<acts.size();i++){
+		randnum = rand()%acts.size();
+		tempact = acts.at(i);
+		acts.at(i) = acts.at(randnum);
+		acts.at(randnum) = tempact;
+		//printf("i= %d rand=%d ",i,randnum);
+	}
+	for(int i=0;i<acts.size();i++){
+		addActivity(acts.at(i).teacher,acts.at(i).subject,acts.at(i).group,acts.at(i).audtype,acts.at(i).id);
+	}
 	locateActivitiesWithoutAuditory();
 	this->shuffle(2);
 	locateActivitiesWithoutAuditory();
-	printf("activityWithoutAuditory=%d\n",activityWithoutAuditory.size());
+	//printf("activityWithoutAuditory=%d\n",activityWithoutAuditory.size());
 }
 
 timetable timetable::operator*( timetable const tt ){
@@ -194,7 +204,7 @@ timetable timetable::operator*( timetable const tt ){
 		restt->addActivity(acts.at(k).teacher, acts.at(k).subject, acts.at(k).group, acts.at(k).audtype, acts.at(k).id);			
 	}	
 	restt->locateActivitiesWithoutAuditory();
-	restt->statistics();
+	//restt->statistics();
 	return *restt;
 }
 
@@ -236,16 +246,6 @@ bool timetable::checkCollisions(){
 	for(k=0;k<auditories.size();k++){
 		for(i=0;i<6;i++){
 			for(j=0;j<7;j++){
-				/*if ( auditories.at(k).timetable[i][j].used == true 
-					&&
-					(auditories.at(k).timetable[i][j].id == 0
-					|| auditories.at(k).timetable[i][j].audtype == 0 
-					|| auditories.at(k).timetable[i][j].group == 0
-					|| auditories.at(k).timetable[i][j].subject == 0
-					|| auditories.at(k).timetable[i][j].teacher == 0)
-					){
-						printf("auditories %d day %d Time %d \n",k,i,j);
-				}*/
 				int id = auditories.at(k).timetable[i][j].id;
 				if ( id > 0)
 					while(countId(id) > 1){
